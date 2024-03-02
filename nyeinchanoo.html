@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation Dialog</title>
+    <style>
+    @font-face {
+    font-family: 'CustomFont'; /* Choose a name for your font family */
+    src: url('36.ttf') format('truetype');
+    /* Specify the path to your .ttf font file */
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+        @import url("https://fonts.googleapis.com/css2?family=Skranji&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: url('bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            width: 100vw;
+        }
+
+/* Pop-up Dialog Styles */
+#popup-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+     animation: slideInFromTop 0.5s ease-in-out forwards;
+    border-radius: 15px; /* Add rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+
+}
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+.popup-content {
+    font-family: 'CustomFont', cursive;
+    background: #fff;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+     padding: 20px;
+    text-align: center;
+}
+
+#popup-ok-button {
+    font-family: 'CustomFont', cursive;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+     background-color: #007aff; /* Apple-like button color */
+    color: white; /* Button text color */
+    border-radius: 5px; /* Rounded button corners */
+}
+
+#popup-ok-button:hover {
+    background-color: #0056b3; /* Button color on hover */
+}
+        #container {
+            max-width: 100vw;
+            height: 100vh;
+            position: fixed;
+            width: 100%;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(#203462 1px, transparent 1px);
+            background-size: calc(5 * 1px) calc(5 * 1px);
+        }
+
+        .container-inner {
+            background: #a4363e;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 2.5px 3px 0px -1px #620d15, -3px 2.5px 0px -1px #620d15,
+                0px -1px 0px 1px #ee9191, 0px 5px 0px 0px #610c14,
+                0px -5px 0px 0.5px #e66565, 0px 0px 90px 45px #D697D4;
+        }
+
+        .content {
+            font-family: 'CustomFont', cursive;
+            background: radial-gradient(#fffbf3, #ffe19e);
+            padding: 12px;
+            box-sizing: border-box;
+            border-radius: 10px 9px 10px 9px;
+            box-shadow: 0px 0px 0px 3px #5e1e21, 0px 0px 4px 3px #84222b,
+                inset 0px 0px 7.5px 0px #614506, 3px 3px 0.5px 0.5px #e66565,
+                -3px 3px 0.5px 0.5px #e66565;
+            text-align: center;
+        }
+
+        .content p {
+            font-size: 16px;
+            padding: 20px;
+            box-sizing: border-box;
+            color: #461417;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: normal;
+            align-items: center;
+            gap: 15px;
+            box-sizing: border-box;
+        }
+
+        .buttons button {
+            padding: 10px;
+            flex: 1;
+            border-radius: 10px;
+            border: 1px solid #49181e;
+            font-family: 'CustomFont', cursive;
+            color: #fff;
+            font-size: 13px;
+            text-shadow: 0.5px 1px 1.5px #000000;
+            cursor: pointer;
+        }
+
+        .buttons button.confirm {
+            background: linear-gradient(#ced869, #536d1b);
+            box-shadow: 0px 0px 0px 2px #7e1522, 0px 1px 0px 1.5px #e66565;
+        }
+
+        .buttons button.confirm:hover {
+            box-shadow: 0px 0px 0px 2px #7e1522, 0px 1px 0px 1.5px #e66565,
+                inset 1px 1px 5px 1.5px #4e6217;
+        }
+
+        .buttons button.cancel {
+            background: linear-gradient(#ea7079, #891a1a);
+            box-shadow: 0px 0px 0px 2px #7e1522, 0px 1px 0px 1.5px #e66565;
+        }
+
+        .buttons button.cancel:hover {
+            box-shadow: 0px 0px 0px 2px #7e1522, 0px 1px 0px 1.5px #e66565,
+                inset 1px 1px 5px 1.5px #822828;
+        }
+
+   /* New CSS for the confirmation dialog */
+        #confirmation-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+             animation: slideInFromTop 0.5s ease-in-out forwards;
+    border-radius: 0px; /* Add rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    background: rgba(255, 255, 255, 1);
+        }
+
+        .confirmation-content {
+           
+            font-family: 'CustomFont', cursive;
+            background: #fff;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+            border-radius: 0px;
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+    text-align: center;
+        }
+
+        #confirm-ok-button, #confirm-cancel-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            border-radius: 5px; /* Rounded buttons */
+    margin-right: 10px;
+        }
+#confirm-ok-button {
+    background-color: #59267c; /* Apple-like button color */
+    color: white; /* Button text color */
+}#confirm-ok-button:hover {
+    background-color: #0056b3; /* Button color on hover */
+}
+
+#confirm-cancel-button {
+    background-color: #0088cc; /* Red button color */
+    color: white; /* Button text color */
+}
+#confirm-cancel-button:hover {
+    background-color: #d6372c; /* Button color on hover */
+}#confirm-link-button {
+    background-color: #007aff; /* Apple-like button color */
+    color: white; /* Button text color */
+}
+
+#confirm-link-button:hover {
+    background-color: #0056b3; /* Button color on hover */
+}
+#confirm-link-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #006AFF; /* Change the background color to the color you want */
+    color: #fff;
+    border: none;
+    margin-right: 10px;
+}
+
+#confirm-link-button:hover {
+    background-color: #cc0000; /* Change the background color on hover if needed */
+}
+/* CSS for the rotation message */
+.rotate-message {
+   
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.rotate-message p {
+    font-size: 20px;
+    color: #fff;
+}
+
+
+    </style>
+</head>
+<body>
+<audio id="button-click">
+    <source src="bt.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+    <div id="container">
+        <div class="container-inner">
+            <div class="content">
+                <p>အမ်နိုင်း ရှမ်းကိုးမီး ကစားရန် အရင်ဆုံး<br> ဂိမ်းအကောင့်ဖွင့်ဖို့ လိုအပ်ပါတယ်</p>
+            </div>
+            <div class="buttons">
+               <button type="button" class="confirm">ဂိမ်းအကောင့်ဖွင့်မည်</button>
+                <button type="button" class="cancel" style="display: none;">အေးကျင့်များနှင့် တိုက်ရိုက်စကားပြောရန်</button>
+    </div>
+        </div>
+    </div>
+<!-- Pop-up Dialog -->
+<div id="popup-dialog" class="hidden">
+    <div class="popup-content" >
+        <h2>Customer Support</h2><br>
+       အကောင့်သစ်ဖွင့်ခြင်းနှင့် ငွေသွင်း/ငွေထုတ်များကို Customer support မှတဆင့် လုပ်ဆောင်နိုင်ပါသည်
+           
+        <br><button id="popup-ok-button"> အေးကျင့်နှင့်စကားပြောမည်</button>
+    </div>
+</div>
+
+
+   <!-- New Confirmation Dialog -->
+        <div id="confirmation-dialog" class="hidden">
+            <div class="confirmation-content">
+                <h2>အကောင့်သစ်ဖွင့်ခြင်း </h2>
+                <br><p>အကောင့်သစ်ဖွင့်ခြင်းနှင့် ငွေသွင်း/ငွေထုတ်များကို အောက်ပါ ဝိုက်ဘာနှင့် တယ်လီဂရမ်တို့မှတဆင့် လုပ်ဆောင်နိုင်ပါသည်
+                ။
+                <br> <br></p>
+                       
+<button id="confirm-cancel-button">Telegram</button>
+        <button id="confirm-ok-button">Viber</button>
+    
+
+            </div>
+        </div>
+ <div id="rotate-message" class="rotate-message"> 
+    <p><b>Rotate mode ဖွင့်၍ဖုန်းမျက်နှာပြင်ကို အလျားလိုက် ထားပေးပါ</b></p> </div>
+
+    <script>
+
+    // Get references to the audio elements
+    var buttonClickSound = document.getElementById("button-click");
+
+    // Add event listeners to the buttons
+    var confirmButton = document.querySelector(".confirm");
+    var cancelButton = document.querySelector(".cancel");
+
+
+    confirmButton.addEventListener("click", function() {
+        // Play the button click sound
+        buttonClickSound.play();
+
+        // Add your confirmation button logic here
+    });
+
+   cancelButton.addEventListener("click", function () {
+    // Play the button click sound
+    buttonClickSound.play();
+
+    // Preload the target webpage URL
+    var targetWebpageURL = "https://myandevs.com/games/matchimals/chat.html#webchat_widget";
+
+    // Create an iframe element to preload the webpage
+    var preloadIframe = document.createElement("iframe");
+    preloadIframe.src = targetWebpageURL;
+    preloadIframe.style.display = "none"; // Hide the iframe
+    document.body.appendChild(preloadIframe);
+
+    // Show the pop-up dialog
+    var popupDialog = document.getElementById("popup-dialog");
+    popupDialog.style.display = "block";
+});
+// Handle the OK button in the pop-up dialog
+var popupOkButton = document.getElementById("popup-ok-button");
+popupOkButton.addEventListener("click", function() {
+    // Redirect the user to the target URL when OK is clicked
+    window.location.href = "https://myandevs.com/games/matchimals/chat.html#webchat_widget";
+});
+
+
+ // New JavaScript for the confirmation dialog
+var confirmationButton = document.querySelector(".confirm");
+confirmationButton.addEventListener("click", function() {
+    // Play the button click sound
+    buttonClickSound.play();
+
+    // Show the confirmation dialog
+    var confirmationDialog = document.getElementById("confirmation-dialog");
+    confirmationDialog.style.display = "block";
+});
+
+// Handle the Confirm button in the confirmation dialog
+var confirmOkButton = document.getElementById("confirm-ok-button");
+confirmOkButton.addEventListener("click", function() {
+    // Add your logic for the Confirm button action here
+
+    // Redirect to exp.com when the Confirm button is clicked
+    window.location.href = "https://myandevs.com/games/matchimals/viber/contact.html";
+});
+
+// Handle the Cancel button in the confirmation dialog
+var confirmCancelButton = document.getElementById("confirm-cancel-button");
+confirmCancelButton.addEventListener("click", function() {
+    // Redirect to exp2.com when the Cancel button is clicked
+    window.location.href = "telegram_2url.php";
+});
+
+// Handle the Link button in the confirmation dialog
+var confirmLinkButton = document.getElementById("confirm-link-button");
+confirmLinkButton.addEventListener("click", function() {
+    // Close the confirmation dialog
+    window.open("https://myandevs.com/games/matchimals/m/contact.html", "_blank");
+
+});
+
+// Function to check if the device is in landscape mode
+function isLandscape() {
+    return window.innerWidth > window.innerHeight;
+}
+
+// Function to show or hide the rotate message
+function toggleRotateMessage() {
+    var rotateMessage = document.getElementById("rotate-message");
+    if (!isLandscape()) {
+        rotateMessage.style.display = "none"; // Display the message
+    } else {
+        rotateMessage.style.display = "none"; // Hide the message
+    }
+}
+
+// Add an event listener to check for orientation change
+window.addEventListener("resize", toggleRotateMessage);
+
+// Initial check when the page loads
+toggleRotateMessage();
+
+</script>
+</body>
+
+
+</html>
