@@ -3,39 +3,33 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>M9 SKM</title>
-	<meta name="viewport" content="width=720,target-densitydpi=device-dpi,user-scalable=no" />
+<title>SKM(Taung Paw Tar)</title>
+	<meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=no" />
 	<style>
-		body{position:relative;overflow:hidden;width:720px;margin:auto;background-color:#16120f;color:#fff;text-align:center;font-family: "Noto Sans Myanmar", "Pyidaungsu";}
-		#wrap{position:relative;width:720px;padding-top:468px; background-image:url(bg.png);background-repeat:no-repeat;background-position:50% 0px;background-size:720px 539px;}
-		#downApk>div{margin-left:205px; width:309px;height:92px;background-image:url(download.png);background-size:309px 92px;}
-		#downGP>div{width:309px;height:92px;background-image:url(down-gp.png);background-size:309px 92px;}
-		#downIpa>div{margin-left:189px;width:341px;height:92px;background-image:url(down-ios.png);background-size:341px 92px;}
-		.text{margin:10px 50px 0 50px;font-size:16px;text-align:left;}
-		.advs{margin-top:5px;}.advs img {width: 297px;height: 414px;}.advs img:first-child{content: url(show1.png);}
-		.advs img:nth-child(2){margin-left: 21px;content: url(show2.png);}
+		body{position:relative;overflow:hidden;width:640px;margin:auto;background-color:#191c46;color:#fff;text-align:center;font-size: 20px;}#wrap{position:relative;width:640px;background-image:url(bg.png);background-repeat:no-repeat;background-position:50% 0px;background-size:640px 371px;}#icon{padding-top:270px;height:144px;}
+		.text{margin-top: 20px;}.star{margin-left: 40px;}.tag>div{display: inline-block;}.tag *{vertical-align: middle;}.tag img{margin-right: 10px;}.tag div:first-child{margin-right: 50px;}
+		.buttons{margin-top:50px;}.buttons>a{display:inline-block;width:227px;height:65px;color:#000;background-color:#fcfcfc;font-size:24px;line-height:63px;text-decoration:none;border-radius:25px;}
+		.buttons>a:first-child{margin-right: 50px;}#downIpa{width: 380px;}.buttons img{float:right; margin-top:10px; margin-right:10px;}
+		.split{margin:100px 20px 20px 20px;background-color:#d0d0d0;height:1px;}
 	</style>
 </head>
 <body>
 <div id="wrap">
-	<div class="buttons android"><a id="downApk" ><div>&nbsp</div></a></div>
-	<div class="buttons ios"><a id="downIpa"><div>&nbsp</div></a></div>
-	<div class="text">
-		အကောင့်အခမဲ့ဒေါင်းလုတ်ပြီး စာရင်းသွင်းရုံဖြင့် ဆုလာဘ်များရယူလိုက်ပါ 
-		<p/>
-		M9ဂိမ်းစင်တာမှာ လက်ရာမြောက်သော ဂရပ်ဖစ်ပုံလှလှနှင့် စွဲငြိဖွယ်ကောင်းသောအသံပါဝါရှိသည့်အဆင့်မြင့်ရှမ်းကိုးမီးဂိမ်းကို ကစားကြည့်လိုက်ပါ
-		<p/>
-		အွန်လိုင်းကာစီနိုကစားပြီး နေ့ချင်းညချင်းကြွယ်ဝချမ်းသာခြင်း၏ စိတ်လူပ်ရှားမူကိုခံစားကြပါစို့
+	<img id="icon" src="icon.png"/>
+	<div class="text">Version number： 1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update time：2022.10.09
+		<p/>APK： 44 MB<span class="star"><img src="star.png"/><img src="star.png"/><img src="star.png"/><img src="star.png"/><img src="star.png"/></span>1.68M Downloads
+		<div class="tag" > <div><img src="ad.png"/>No ads</div><div><img src="virus.png"/><span>Virus free</span></div> </div>
 	</div>
-	<div class="advs">
-		<img /> <img />
-	</div
+	<div class="buttons android"><a id="downApk" >Download APK<img src="download.png"/></a></div>
+	<div class="buttons ios"><a id="downIpa">Download for IOS<img src="download.png"/></a></div>
+	<div id="slogan"></div>
+	<div class="split"></div>
 </div>
 <script>
 	var appInfo = {
-		urlScheme: 'm9skm',
-		urlAPK: '/down/m9skm.apk',
-		urlIOS: 'https://eng.dolameng.com/iz43co',
+		urlScheme: 'skmtpt',
+		urlAPK: 'https://m2long.s3.ap-southeast-1.amazonaws.com/skmtpt.apk',
+		urlIOS: 'itms-services://?action=download-manifest&url=https://skmtpt.oss-ap-southeast-1.aliyuncs.com/down/manifest.plist',
 	};
 	function getParam(key, url) { 
 		var u = url || window.location.search,
@@ -49,7 +43,6 @@
 	var isIOS = /(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent);
 	function updateInfo() {
 		cls2e(isIOS ? 'android':'ios').style.display = 'none';
-		//cls2e('ios').style.display = 'none';
 		id2e('downIpa').href = appInfo.urlIOS;
 		id2e('downApk').href = appInfo['urlAPK' + getParam('partner')] || appInfo.urlAPK;
 	}
